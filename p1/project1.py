@@ -61,34 +61,26 @@ the alphabet, key
 def decrypt(c, key):
     #   Empty plaintext string
     p = ""
-    #   Make a copy of the key (k) in order to leave initial key unchanged
-    k = key
-    alpha_list = a_list()
+    #   Make an list containing key and all elements of the alphabet
+    decypher = key + a_list()
+    
 
-    #   Implement selection sort to order k in lexographical order
-    for i in range(0, len(k)-1):
-        for j in range(i+1, len(k)):
-            #   index of the lowest ASCII value character to be swapped with i
-            min = i
-            if (ord(k[j]) < ord(k[min])):
-                #   If the ASCII value of the char at index i in the cipher text
-                #   is lower than min, replace min with index of that char
-                min = j
+    #   Sort first 26 elements into lexigraphical order, making the same swaps
+    #   to the last 26 elements of the list
+    for i in range(0, 25):
+        #   If the ASCII value of the character is different than the index it
+        #   exists at, swap it with the element at the correct index
+        if (ord(i)-65 != i):
+            temp = decypher[ord(i)-65]
+            decypher[ord(i)-65] = decypher[i]
+            decypher[i] = temp
 
-            #   Make necessary swaps to the key to get it in order
-            temp = k[i]
-            k[i] = k[min]
-            k[min] = temp
-
-            #   Make those same swaps to the alphabet list
-            temp = alpha_list[i]
-            alpha_list[i] = alpha_list[min]
-            alpha_list[min] = temp
+            #   Make those same swaps to the alphabet section of list
 
     #   With k in lexographical order, parse each character in the ciphertext to
     #   construct the plaintext from the shuffled alphabet
     for x in c:
-        p += alpha_list[ord(x)-65]
+        p += decypher[ord(x+26)-65]
 
     return p
 
